@@ -400,6 +400,70 @@ jobs:
             luajit/build/include
             luajit/build/lib
 
+  miniupnpc-mingw32:
+    runs-on: ubuntu-24.04
+    steps:
+      - name: Install mingw-w64
+        run: |
+          sudo apt-get update
+          sudo DEBIAN_FRONTEND=noninteractive apt-get install -yq --no-install-recommends mingw-w64
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Checkout miniupnp
+        uses: actions/checkout@v4
+        with:
+          repository: miniupnp/miniupnp
+          ref: master
+          path: miniupnp
+      - name: Build
+        run: |
+          cd ${{github.workspace}}/miniupnp/miniupnpc
+          CC=i686-w64-mingw32-gcc AR=i686-w64-mingw32-ar CFLAGS="-m32 -march=i686 -DMINIUPNP_STATICLIB" make -f Makefile.mingw libminiupnpc.a
+      - name: Package files
+        run: |
+          mkdir -p ${{github.workspace}}/miniupnp/build/include/miniupnpc
+          cp ${{github.workspace}}/miniupnp/miniupnpc/*.h ${{github.workspace}}/miniupnp/build/include/miniupnpc/
+          cp ${{github.workspace}}/miniupnp/miniupnpc/libminiupnpc.a ${{github.workspace}}/miniupnp/build/
+      - name: Upload artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: miniupnpc-mingw32
+          path: |
+            ${{github.workspace}}/miniupnp/build/include
+            ${{github.workspace}}/miniupnp/build/libminiupnpc.a
+
+  libnatpmp-mingw32:
+    runs-on: ubuntu-24.04
+    steps:
+      - name: Install mingw-w64
+        run: |
+          sudo apt-get update
+          sudo DEBIAN_FRONTEND=noninteractive apt-get install -yq --no-install-recommends mingw-w64
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Checkout libnatpmp
+        uses: actions/checkout@v4
+        with:
+          repository: miniupnp/libnatpmp
+          ref: master
+          path: libnatpmp
+      - name: Build
+        run: |
+          cd ${{github.workspace}}/libnatpmp
+          CC=i686-w64-mingw32-gcc AR=i686-w64-mingw32-ar CFLAGS="-m32 -march=i686 -DNATPMP_STATICLIB" make -f Makefile.mingw libnatpmp.a
+      - name: Package files
+        run: |
+          mkdir -p ${{github.workspace}}/libnatpmp/build/include/natpmp
+          cp ${{github.workspace}}/libnatpmp/*.h ${{github.workspace}}/libnatpmp/build/include/natpmp/
+          cp ${{github.workspace}}/libnatpmp/libnatpmp.a ${{github.workspace}}/libnatpmp/build/
+      - name: Upload artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: libnatpmp-mingw32
+          path: |
+            ${{github.workspace}}/libnatpmp/build/include
+            ${{github.workspace}}/libnatpmp/build/libnatpmp.a
+
   zlib-mingw64:
     runs-on: ubuntu-24.04
     steps:
@@ -802,6 +866,70 @@ jobs:
             luajit/build/include
             luajit/build/lib
 
+  miniupnpc-mingw64:
+    runs-on: ubuntu-24.04
+    steps:
+      - name: Install mingw-w64
+        run: |
+          sudo apt-get update
+          sudo DEBIAN_FRONTEND=noninteractive apt-get install -yq --no-install-recommends mingw-w64
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Checkout miniupnp
+        uses: actions/checkout@v4
+        with:
+          repository: miniupnp/miniupnp
+          ref: master
+          path: miniupnp
+      - name: Build
+        run: |
+          cd ${{github.workspace}}/miniupnp/miniupnpc
+          CC=x86_64-w64-mingw32-gcc AR=x86_64-w64-mingw32-ar CFLAGS="-DMINIUPNP_STATICLIB" make -f Makefile.mingw libminiupnpc.a
+      - name: Package files
+        run: |
+          mkdir -p ${{github.workspace}}/miniupnp/build/include/miniupnpc
+          cp ${{github.workspace}}/miniupnp/miniupnpc/*.h ${{github.workspace}}/miniupnp/build/include/miniupnpc/
+          cp ${{github.workspace}}/miniupnp/miniupnpc/libminiupnpc.a ${{github.workspace}}/miniupnp/build/
+      - name: Upload artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: miniupnpc-mingw64
+          path: |
+            ${{github.workspace}}/miniupnp/build/include
+            ${{github.workspace}}/miniupnp/build/libminiupnpc.a
+
+  libnatpmp-mingw64:
+    runs-on: ubuntu-24.04
+    steps:
+      - name: Install mingw-w64
+        run: |
+          sudo apt-get update
+          sudo DEBIAN_FRONTEND=noninteractive apt-get install -yq --no-install-recommends mingw-w64
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Checkout libnatpmp
+        uses: actions/checkout@v4
+        with:
+          repository: miniupnp/libnatpmp
+          ref: master
+          path: libnatpmp
+      - name: Build
+        run: |
+          cd ${{github.workspace}}/libnatpmp
+          CC=x86_64-w64-mingw32-gcc AR=x86_64-w64-mingw32-ar CFLAGS="-DNATPMP_STATICLIB" make -f Makefile.mingw libnatpmp.a
+      - name: Package files
+        run: |
+          mkdir -p ${{github.workspace}}/libnatpmp/build/include/natpmp
+          cp ${{github.workspace}}/libnatpmp/*.h ${{github.workspace}}/libnatpmp/build/include/natpmp/
+          cp ${{github.workspace}}/libnatpmp/libnatpmp.a ${{github.workspace}}/libnatpmp/build/
+      - name: Upload artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: libnatpmp-mingw64
+          path: |
+            ${{github.workspace}}/libnatpmp/build/include
+            ${{github.workspace}}/libnatpmp/build/libnatpmp.a
+
   centijson-lin64:
     runs-on: ubuntu-24.04
     steps:
@@ -909,6 +1037,8 @@ jobs:
       - ffmpeg-mingw32
       - openal-mingw32
       - luajit-mingw32
+      - miniupnpc-mingw32
+      - libnatpmp-mingw32
       - zlib-mingw64
       - centijson-mingw64
       - astronomy-mingw64
@@ -917,10 +1047,12 @@ jobs:
       - tomlc99-mingw64
       - ffmpeg-mingw64
       - openal-mingw64
+      - luajit-mingw64
+      - miniupnpc-mingw64
+      - libnatpmp-mingw64
       - centijson-lin64
       - astronomy-lin64
       - tomlc99-lin64
-      - luajit-mingw64
     steps:
       - name: Download zlib-mingw32
         uses: actions/download-artifact@v4
@@ -967,6 +1099,16 @@ jobs:
         with:
           name: luajit-mingw32
           path: ${{github.workspace}}/luajit-mingw32
+      - name: Download miniupnpc-mingw32
+        uses: actions/download-artifact@v4
+        with:
+          name: miniupnpc-mingw32
+          path: ${{github.workspace}}/miniupnpc-mingw32
+      - name: Download libnatpmp-mingw32
+        uses: actions/download-artifact@v4
+        with:
+          name: libnatpmp-mingw32
+          path: ${{github.workspace}}/libnatpmp-mingw32
 
       - name: Download zlib-mingw64
         uses: actions/download-artifact@v4
@@ -1013,6 +1155,16 @@ jobs:
         with:
           name: luajit-mingw64
           path: ${{github.workspace}}/luajit-mingw64
+      - name: Download miniupnpc-mingw64
+        uses: actions/download-artifact@v4
+        with:
+          name: miniupnpc-mingw64
+          path: ${{github.workspace}}/miniupnpc-mingw64
+      - name: Download libnatpmp-mingw64
+        uses: actions/download-artifact@v4
+        with:
+          name: libnatpmp-mingw64
+          path: ${{github.workspace}}/libnatpmp-mingw64
       - name: Download centijson-lin64
         uses: actions/download-artifact@v4
         with:
@@ -1039,6 +1191,8 @@ jobs:
           tar czf ${{github.workspace}}/ffmpeg-mingw32.tar.gz -C ${{github.workspace}}/ffmpeg-mingw32 .
           tar czf ${{github.workspace}}/openal-mingw32.tar.gz -C ${{github.workspace}}/openal-mingw32 .
           tar czf ${{github.workspace}}/luajit-mingw32.tar.gz -C ${{github.workspace}}/luajit-mingw32 .
+          tar czf ${{github.workspace}}/miniupnpc-mingw32.tar.gz -C ${{github.workspace}}/miniupnpc-mingw32 .
+          tar czf ${{github.workspace}}/libnatpmp-mingw32.tar.gz -C ${{github.workspace}}/libnatpmp-mingw32 .
           tar czf ${{github.workspace}}/zlib-mingw64.tar.gz -C ${{github.workspace}}/zlib-mingw64 .
           tar czf ${{github.workspace}}/centijson-mingw64.tar.gz -C ${{github.workspace}}/centijson-mingw64 .
           tar czf ${{github.workspace}}/astronomy-mingw64.tar.gz -C ${{github.workspace}}/astronomy-mingw64 .
@@ -1048,6 +1202,8 @@ jobs:
           tar czf ${{github.workspace}}/ffmpeg-mingw64.tar.gz -C ${{github.workspace}}/ffmpeg-mingw64 .
           tar czf ${{github.workspace}}/openal-mingw64.tar.gz -C ${{github.workspace}}/openal-mingw64 .
           tar czf ${{github.workspace}}/luajit-mingw64.tar.gz -C ${{github.workspace}}/luajit-mingw64 .
+          tar czf ${{github.workspace}}/miniupnpc-mingw64.tar.gz -C ${{github.workspace}}/miniupnpc-mingw64 .
+          tar czf ${{github.workspace}}/libnatpmp-mingw64.tar.gz -C ${{github.workspace}}/libnatpmp-mingw64 .
           tar czf ${{github.workspace}}/centijson-lin64.tar.gz -C ${{github.workspace}}/centijson-lin64 .
           tar czf ${{github.workspace}}/astronomy-lin64.tar.gz -C ${{github.workspace}}/astronomy-lin64 .
           tar czf ${{github.workspace}}/tomlc99-lin64.tar.gz -C ${{github.workspace}}/tomlc99-lin64 .
@@ -1066,6 +1222,8 @@ jobs:
             ${{github.workspace}}/ffmpeg-mingw32.tar.gz
             ${{github.workspace}}/openal-mingw32.tar.gz
             ${{github.workspace}}/luajit-mingw32.tar.gz
+            ${{github.workspace}}/miniupnpc-mingw32.tar.gz
+            ${{github.workspace}}/libnatpmp-mingw32.tar.gz
             ${{github.workspace}}/zlib-mingw64.tar.gz
             ${{github.workspace}}/centijson-mingw64.tar.gz
             ${{github.workspace}}/astronomy-mingw64.tar.gz
@@ -1075,6 +1233,8 @@ jobs:
             ${{github.workspace}}/ffmpeg-mingw64.tar.gz
             ${{github.workspace}}/openal-mingw64.tar.gz
             ${{github.workspace}}/luajit-mingw64.tar.gz
+            ${{github.workspace}}/miniupnpc-mingw64.tar.gz
+            ${{github.workspace}}/libnatpmp-mingw64.tar.gz
             ${{github.workspace}}/centijson-lin64.tar.gz
             ${{github.workspace}}/astronomy-lin64.tar.gz
             ${{github.workspace}}/tomlc99-lin64.tar.gz
