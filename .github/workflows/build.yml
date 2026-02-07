@@ -59,9 +59,9 @@ jobs:
           path: enet6
       - name: Package files
         run: |
-          mkdir -p ${{github.workspace}}/enet6/build
+          mkdir -p ${{github.workspace}}/enet6/build/src
           cp -r ${{github.workspace}}/enet6/include ${{github.workspace}}/enet6/build/
-          cp -r ${{github.workspace}}/enet6/src ${{github.workspace}}/enet6/build/
+          cp ${{github.workspace}}/enet6/*.c ${{github.workspace}}/enet6/build/src/
       - name: Upload artifact
         uses: actions/upload-artifact@v4
         with:
@@ -523,9 +523,9 @@ jobs:
           path: enet6
       - name: Package files
         run: |
-          mkdir -p ${{github.workspace}}/enet6/build
+          mkdir -p ${{github.workspace}}/enet6/build/src
           cp -r ${{github.workspace}}/enet6/include ${{github.workspace}}/enet6/build/
-          cp -r ${{github.workspace}}/enet6/src ${{github.workspace}}/enet6/build/
+          cp ${{github.workspace}}/enet6/*.c ${{github.workspace}}/enet6/build/src/
       - name: Upload artifact
         uses: actions/upload-artifact@v4
         with:
